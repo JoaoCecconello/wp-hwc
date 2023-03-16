@@ -1,6 +1,6 @@
 #! /bin/bash
 
-WP_VERSION_FILE_PATH="./public/wp-includes/version.php"
+WP_VERSION_FILE_PATH="./wp-includes/version.php"
 WP_ZIP_NAME="wordpress.zip"
 
 INF_WP_PLUGINS_PATH="./wp-content/plugins"
