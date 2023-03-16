@@ -11,11 +11,15 @@ URL_THEMES="https://downloads.wordpress.org/theme"
 
 NEW_WP_CONTENT_PATH="./wordpress/wp-content"
 
+SEARCH_FOR_CODE="(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|base64|eval)"
+SEARCH_FOR_FILE="*.{php|txt|png|jpeg|jgp|gif|webp|html|css}"
+REGEX_VERSION='[:alpha:][:space:][$_=*:;\47]'
+
 # verifica se arquivo wp_version.php existe
 if [ -f "$WP_VERSION_FILE_PATH" ]; then
 
     # pega a versão do wp
-    WP_VERSION=`grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d '[:alpha:][:space:][$_=:;\47]'`
+    WP_VERSION=`grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d "$REGEX_VERSION"`
     printf "Wordpress version: $WP_VERSION\n"
     
     # baixa e descomprime o novo wordpress, na mesma versão do antigo
@@ -40,7 +44,7 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
     for f in ./wp-content/plugins/*; do
         if [ -d "$f" ]; then
             WP_PLUGIN_NAME="${f##*/}"
-            WP_PLUGIN_VERSION=`find $f -type f -name '*php' | xargs egrep -h 'Version: ' | tr -d '[:alpha:][:space:][$_=*:;\47]'`
+            WP_PLUGIN_VERSION=`find $f -type f -name '*php' | xargs egrep -h 'Version: ' | tr -d "$REGEX_VERSION"`
             printf "Downloading $WP_PLUGIN_NAME from: $URL_PLUGINS/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip\n"
             wget --quiet -O "$NEW_WP_CONTENT_PATH/plugins/$WP_PLUGIN_NAME.zip" "$URL_PLUGINS/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip" \
                 && unzip -qq $NEW_WP_CONTENT_PATH/plugins/$WP_PLUGIN_NAME.zip \
@@ -54,7 +58,7 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
     for f in ./wp-content/themes/*; do
         if [ -d "$f" ]; then
             WP_THEME_NAME="${f##*/}"
-            WP_THEME_VERSION=`grep 'Version: ' $f/style.css | tr -d '[:alpha:][:space:][$_=:;\47]'`
+            WP_THEME_VERSION=`grep 'Version: ' $f/style.css | tr -d "$REGEX_VERSION"`
             printf "Downloading $WP_THEME_NAME from: $URL_THEMES/$WP_THEME_NAME.$WP_THEME_VERSION.zip\n"
             wget --quiet -O "$NEW_WP_CONTENT_PATH/themes/$WP_THEME_NAME.zip" "$URL_THEMES/$WP_THEME_NAME.$WP_THEME_VERSION.zip" \
                 && unzip -qq $NEW_WP_CONTENT_PATH/themes/$WP_THEME_NAME.zip \
@@ -66,10 +70,10 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
     # encontra e remove arquivos com funções php dentro da wp-content/uploads
     printf "Removing infected files: \n"
     rm -rf $(find $NEW_WP_CONTENT_PATH/uploads -type f -name '*' |\
-        xargs egrep -i "(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|base64|eval)") 
+        xargs egrep -i "$SEARCH_FOR_CODE")
 
-    rm -rf $(find $NEW_WP_CONTENT_PATH -type f -name '*.{php|txt|png|jpeg|jgp|gif|webp|html|css}' ! -path "$NEW_WP_CONTENT_PATH/plugins" ! -path "$NEW_WP_CONTENT_PATH/themes" |\
-        xargs egrep -i "(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|base64|eval)") 
+    rm -rf $(find $NEW_WP_CONTENT_PATH -type f -name "$SEARCH_FOR_FILE" ! -path "$NEW_WP_CONTENT_PATH/plugins" ! -path "$NEW_WP_CONTENT_PATH/themes" |\
+        xargs egrep -i "$SEARCH_FOR_CODE") 
 else 
     echo "$WP_VERSION_FILE_PATH does not exist."
 fi
