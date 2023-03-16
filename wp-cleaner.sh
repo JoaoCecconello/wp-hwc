@@ -11,7 +11,7 @@ URL_THEMES="https://downloads.wordpress.org/theme"
 
 NEW_WP_CONTENT_PATH="./wordpress/wp-content"
 
-SEARCH_FOR_CODE="(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|base64|eval)"
+SEARCH_FOR_CODE="(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|eval)"
 SEARCH_FOR_FILE="*.{php|txt|png|jpeg|jgp|gif|webp|html|css}"
 REGEX_VERSION='[:alpha:][:space:][$_=*:;\47]'
 
@@ -77,4 +77,3 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
 else 
     echo "$WP_VERSION_FILE_PATH does not exist."
 fi
-
