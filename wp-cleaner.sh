@@ -32,11 +32,10 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
 
     printf "Downloading plugins:\n"
     # loop para verificar todos os plugins, verifica se é diretório, depois encontra a versão e baixa o plugin novamente
-    for f in ./wp-content/plugins/*; do
+    for f in ./wp-content/plugin/*; do
         if [ -d "$f" ]; then
-            
             WP_PLUGIN_NAME="${f##*/}"
-            WP_PLUGIN_VERSION=`grep -h 'Version: ' $f/* | tr -d '[:alpha:][:space:][$_=:;\47]'`
+            WP_PLUGIN_VERSION=`grep -h 'Version: ' $f/* | tr -d '[:alpha:][:space:][$_=-*:;\47]'`
             printf "Downloading from: https://downloads.wordpress.org/plugin/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip\n"
             wget --quiet -O "./wordpress/wp-content/plugins/$WP_PLUGIN_NAME.zip" "https://downloads.wordpress.org/plugin/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip" \
                 && unzip -qq ./wordpress/wp-content/plugins/$WP_PLUGIN_NAME.zip \
@@ -47,7 +46,7 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
 
     printf "Downloading themes:\n"
     # loop para verificar todos os temas, verifica se é diretório, depois encontra a versão e baixa o tema novamente
-    for f in ./wp-content/themes/*; do
+    for f in ./wp-content/theme/*; do
         if [ -d "$f" ]; then
             WP_THEME_NAME="${f##*/}"
             WP_THEME_VERSION=`grep 'Version: ' $f/style.css | tr -d '[:alpha:][:space:][$_=:;\47]'`
