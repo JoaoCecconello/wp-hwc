@@ -25,18 +25,21 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
     rsync -r --stats --exclude="$INF_WP_PLUGINS_PATH" --exclude="$INF_WP_THEME_PATH" ./wp-content ./wordpress
 
     # copia o wp-config.php
-    cp ./wp-config.php ./wordpress
-    printf "Copied wp-config.php\n"
+    if [ -f "./wp-config.php" ]; then
+        cp ./wp-config.php ./wordpress
+        printf "Copied wp-config.php\n"
+    fi
 
     printf "Downloading plugins:\n"
     # loop para verificar todos os plugins, verifica se é diretório, depois encontra a versão e baixa o plugin novamente
     for f in ./wp-content/plugins/*; do
         if [ -d "$f" ]; then
-            WP_PLUGIN_VERSION=`grep --include=\*.php 'Version: ' "./wp-content/plugins/$f" | tr -d '[:alpha:][:space:][$_=:;\47]'`
-            printf "Downloading from: https://downloads.wordpress.org/plugin/$f.$WP_PLUGIN_VERSION.zip\n"
-            wget -O "./wordpress/wp-content/plugins/$f.zip" "https://downloads.wordpress.org/plugin/$f.$WP_PLUGIN_VERSION.zip" \
-                && unzip -qq ./wordpress/wp-content/plugins/$f.zip \
-                && rm -rf "./wordpress/wp-content/plugins/$f.zip";
+            WP_PLUGIN_NAME="${f##*/}"
+            WP_PLUGIN_VERSION=`grep --include=\*.php 'Version: ' "$f" | tr -d '[:alpha:][:space:][$_=:;\47]'`
+            printf "Downloading from: https://downloads.wordpress.org/plugin/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip\n"
+            wget -O "./wordpress/wp-content/plugins/$WP_PLUGIN_NAME.zip" "https://downloads.wordpress.org/plugin/$WP_PLUGIN_NAME.$WP_PLUGIN_VERSION.zip" \
+                && unzip -qq ./wordpress/wp-content/plugins/$WP_PLUGIN_NAME.zip \
+                && rm -rf "./wordpress/wp-content/plugins/$WP_PLUGIN_NAME.zip";
         fi
     done
     printf "Done!\n"
@@ -45,11 +48,12 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
     # loop para verificar todos os temas, verifica se é diretório, depois encontra a versão e baixa o tema novamente
     for f in ./wp-content/theme/*; do
         if [ -d "$f" ]; then
-            WP_THEME_VERSION=`grep 'Version: ' "./wp-content/themes/$f/style.css" | tr -d '[:alpha:][:space:][$_=:;\47]'`
-            printf "Downloading from: https://downloads.wordpress.org/theme/$f.$WP_THEME_VERSION.zip\n"
-            wget --quiet -O "./wordpress/wp-content/themes/$f.zip" "https://downloads.wordpress.org/theme/$f.$WP_THEME_VERSION.zip" \
-                && unzip -qq ./wordpress/wp-content/themes/$f.zip \
-                && rm -rf "./wordpress/wp-content/themes/$f.zip";
+            WP_THEME_NAME="${f##*/}"
+            WP_THEME_VERSION=`grep 'Version: ' "$f/style.css" | tr -d '[:alpha:][:space:][$_=:;\47]'`
+            printf "Downloading from: https://downloads.wordpress.org/theme/$WP_THEME_NAME.$WP_THEME_VERSION.zip\n"
+            wget --quiet -O "./wordpress/wp-content/themes/$WP_THEME_NAME.zip" "https://downloads.wordpress.org/theme/$WP_THEME_NAME.$WP_THEME_VERSION.zip" \
+                && unzip -qq ./wordpress/wp-content/themes/$WP_THEME_NAME.zip \
+                && rm -rf "./wordpress/wp-content/themes/$WP_THEME_NAME.zip";
         fi
     done
 
