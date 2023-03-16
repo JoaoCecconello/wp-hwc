@@ -11,8 +11,10 @@ if [ -f "$WP_VERSION_FILE_PATH" ]; then
 
     # pega a versão do wp
     WP_VERSION=`grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d '[:alpha:][:space:][$_=:;\47]'`
+    echo "$WP_VERSION"
     
     # baixa e descomprime o novo wordpress, na mesma versão do antigo
+    echo "https://wordpress.org/wordpress-$WP_VERSION.zip"
     wget -O wordpress.zip "https://wordpress.org/wordpress-$WP_VERSION.zip"
     unzip wordpress.zip
     rm -rf './wordpress.zip'
