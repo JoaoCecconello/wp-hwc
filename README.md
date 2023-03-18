@@ -12,6 +12,10 @@
 </p>
 
 <h3 align="center">How to use</h3>
+<p>
+    Execute the following steps to use the script. After the execution a folder called "wordpress" with the cleaned version will be available inside your wordpress folder.
+</p>
+
 
 ```bash
 # clone the repository inside your WordPress folder
@@ -23,3 +27,13 @@ $ chmod 777 ./wp-hwc/wp-cleaner.sh
 # execute
 $ ./wp-hwc/wp-cleaner.sh
 ```
+<h3 align="center">How does it work</h3>
+<p>
+    First of all we need to understand how wordpress works. It has 3 folders, just one of them your uploads and plugins and themes are stored: wp-content. The other two folder don't change if plugins and themes are modified. Inside wp-content there is 3 other folders that are essencial: plugins, themes and uploads. The uploads folder should not have executable files such as php, html and etc.
+</p>
+<p>
+    What the script does is pretty simple: First it downloads the same version of your wordpress then copies the entire wp-content folder, except for plugins and themes directiory. After, it cleans malicious files from the entire wp-content. After removing the files, it downloads all plugins and themes from wordpress website. 
+</p>
+<p>
+    All this process allow to recreate the entire wordpress structures and files, avoiding malicious files inside plugins, themes, wordpress core and wp-content folder. The script is not fail-proof, so it generates a report.txt file with all diferences between the hacked and cleaned wordpress.
+</p>
