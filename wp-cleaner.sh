@@ -15,7 +15,7 @@ function downloadAndUnzipAll {
                 
                 printf "Downloading %s from %s... " "$name" "$url"
                 if wget --quiet -O "$zip_path" "$url"; then
-                    unzip --qqf "$zip_path" -d "./wordpress/wp-content/${type}s/" && rm -rf "$zip_path"
+                    unzip --qq -o "$zip_path" -d "./wordpress/wp-content/${type}s/" && rm -rf "$zip_path"
                     printf "Done!\n"
                 else
                     printf "Failed to download\n"
@@ -50,7 +50,7 @@ function downloadWordpress {
 
 if [ -f "./wp-includes/version.php" ]; then
     if downloadWordpress; then
-         [ -e "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
+        [ -e "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
 
         printf "Copying files from wp-content, except plugins and themes:\n"
         rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
