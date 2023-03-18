@@ -49,7 +49,8 @@ function downloadWordpress {
 }
 
 if [ -f "./wp-includes/version.php" ]; then
-    if [ downloadWordpress ]; then
+    downloadWordpress
+    if [ $? ]; then
         [ -f "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
 
         printf "Copying files from wp-content, except plugins and themes:\n"
