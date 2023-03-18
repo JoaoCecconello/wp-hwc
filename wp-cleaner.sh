@@ -15,7 +15,7 @@ function downloadAndUnzipAll {
                 
                 printf "Downloading %s from %s... " "$name" "$url"
                 if wget --quiet -O "$zip_path" "$url"; then
-                    unzip -qqf "$zip_path" && rm -rf "$zip_path"
+                    unzip -qqf "$zip_path" 
                     printf "Done!\n"
                 else
                     printf "Failed to download\n"
