@@ -48,6 +48,8 @@ function downloadWordpress {
     fi
 }
 
+cd ..
+
 if [ -f "./wp-includes/version.php" ]; then
     if downloadWordpress; then
         [ -e "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
@@ -62,7 +64,7 @@ if [ -f "./wp-includes/version.php" ]; then
         downloadAndUnzipAll "plugin" "*.php"
         downloadAndUnzipAll "theme" "style.css"
 
-        diff --exclude=wordpress -r . ./wordpress | tee report.txt
+        diff --exclude=wordpress --exclude=wp-hwc -r . ./wordpress | tee report.txt
     fi    
 else 
     echo "File version.php does not exist, aborting!"
