@@ -8,7 +8,7 @@
 
 <h3 align="center">🚧🚧 This project still in development 🚧🚧</h3>
 <p>
-    I'm still working on it so, if you use it and have any trouble, you can report to me or suggest any changes. I'm doing it as I can =)
+    I'm still working on it so, if you use and have any trouble, you can report to me or suggest any changes. I'm doing it as I can =)
 </p>
 
 <h2>How to use</h2>
