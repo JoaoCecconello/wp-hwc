@@ -15,7 +15,7 @@ function downloadAndUnzipAll {
                 
                 printf "Downloading %s from %s... " "$name" "$url"
                 if wget --quiet -O "$zip_path" "$url"; then
-                    unzip -qq $zip_path
+                    unzip -qq "$zip_path" -d "./wordpress/wp-content/${type}s/$name"
                     printf "Done!\n"
                 else
                     printf "Failed to download\n"
