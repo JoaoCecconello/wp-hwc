@@ -11,7 +11,7 @@
     I'm still working on it so, if you use it and have any trouble, you can report to me or suggest any changes. I'm doing it as I can =)
 </p>
 
-<h3 align="center">How to use</h3>
+<h2>How to use</h2>
 <p>
     Execute the following steps to use the script. After the execution a folder called "wordpress" with the cleaned version will be available inside your wordpress folder.
 </p>
@@ -27,7 +27,7 @@ $ chmod 777 ./wp-hwc/wp-cleaner.sh
 # execute
 $ ./wp-hwc/wp-cleaner.sh
 ```
-<h3 align="center">How does it work</h3>
+<h2>How does it work</h2>
 <p>
     First of all we need to understand how wordpress works. It has 3 folders, just one of them your uploads and plugins and themes are stored: wp-content. The other two folder don't change if plugins and themes are modified. Inside wp-content there is 3 other folders that are essencial: plugins, themes and uploads. The uploads folder should not have executable files such as php, html and etc.
 </p>
