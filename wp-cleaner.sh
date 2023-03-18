@@ -15,7 +15,7 @@ function downloadAndUnzipAll {
                 
                 printf "Downloading %s from %s... " "$name" "$url"
                 if wget --quiet -O "$zip_path" "$url"; then
-                    unzip --qq "$zip_path" -d "./wordpress/wp-content/${type}s/" && rm -rf "$zip_path"
+                    unzip --qqf "$zip_path" -d "./wordpress/wp-content/${type}s/" && rm -rf "$zip_path"
                     printf "Done!\n"
                 else
                     printf "Failed to download\n"
@@ -62,7 +62,7 @@ if [ -f "./wp-includes/version.php" ]; then
         downloadAndUnzipAll "plugin" "*.php"
         downloadAndUnzipAll "theme" "style.css"
 
-        diff --exclude=wordpress -r ./wordpress . | tee report.txt
+        diff --exclude=wordpress -r . ./wordpress | tee report.txt
     fi    
 else 
     echo "File version.php does not exist, aborting!"
