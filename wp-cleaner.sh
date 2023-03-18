@@ -1,6 +1,4 @@
 #! /bin/bash
-NEW_WP_CONTENT_PATH="./wordpress/wp-content"
-
 SEARCH_FOR_CODE="(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|eval)"
 REGEX_VERSION='[:alpha:][:space:][$_=*:;\47]'
 
@@ -58,8 +56,8 @@ if [ -f "./wp-includes/version.php" ]; then
         rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
 
         printf "Removing malicious files: \n"
-        rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
-        rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+        rm -rf `$(find ./wordpress/wp-content/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+        rm -rf `$(find ./wordpress/wp-content -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
         downloadAndUnzipAll "plugin" "*.php"
         downloadAndUnzipAll "theme" "style.css"
