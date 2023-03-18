@@ -59,7 +59,7 @@ if [ -f "./wp-includes/version.php" ]; then
 
         printf "Removing malicious files: \n"
         rm -rf `$(find ./wordpress/wp-content/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
-        rm -rf `$(find ./wordpress/wp-content -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+        rm -rf `$(find ./wordpress/wp-content -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css|js}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
         downloadAndUnzipAll "plugin" "*.php"
         downloadAndUnzipAll "theme" "style.css"
