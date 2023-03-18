@@ -10,3 +10,15 @@
 <p>
     I'm still working on it so, if you use it and have any trouble, you can report to me or suggest any changes. I'm doing it as I can =)
 </p>
+
+<h3 align="center">How to use</h3>
+```bash
+# clone the repository inside your WordPress folder
+git clone https://github.com/JoaoCecconello/wp-hwc.git
+
+# change permissions
+chmod 777 ./wp-hwc/wp-cleaner.sh
+
+# execute
+./wp-hwc/wp-cleaner.sh
+```
