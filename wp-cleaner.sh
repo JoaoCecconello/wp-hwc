@@ -15,11 +15,12 @@ function downloadAndUnzipAll {
                 local zip_path="$NEW_WP_CONTENT_PATH/${type}s/$name.zip"
                 local url="https://downloads.wordpress.org/$type/$name.$version.zip"
                 
-                printf "Downloading %s from: %s\n" "$name" "$url"
+                printf "Downloading %s from %s... " "$name" "$url"
                 if wget --quiet -O "$zip_path" "$url"; then
                     unzip -qqf "$zip_path" && rm -rf "$zip_path"
+                    printf "Done!\n"
                 else
-                    printf "Failed to download from %s\n" "$url"
+                    printf "Failed to download\n"
                 fi
             else
                 printf "Failed to find %s version, skiping!\n" "$name"
@@ -33,14 +34,14 @@ function downloadWordpress {
     local version=$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
-        printf "Downloading WordPress from: %s\n" "$url"
+        printf "Downloading WordPress from %s... " "$url"
 
         if wget --quiet -O "wordpress.zip" "$url"; then
             unzip -qq "wordpress.zip" && rm -rf "./wordpress.zip"
-            printf "Download completed\n"
+            printf "Done!\n\n"
             return 0
         else
-            printf "Failed to download Wordpress from: %s\n" "$url"
+            printf "Failed to download \n"
             return 1
         fi
     else
@@ -60,10 +61,7 @@ if [ -f "./wp-includes/version.php" ]; then
         rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
         rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
-        printf "Downloading plugins:\n"
         downloadAndUnzipAll "plugin" "*.php"
-
-        printf "Downloading themes:\n"
         downloadAndUnzipAll "theme" "style.css"
     fi    
 else 
