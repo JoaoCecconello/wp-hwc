@@ -30,6 +30,7 @@ function downloadAndUnzipAll {
 
 function downloadWordpress {
     local version=`$(grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d "$REGEX_VERSION")`
+    echo "$version"
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
         printf "Downloading WordPress from: %s\n" "url"
