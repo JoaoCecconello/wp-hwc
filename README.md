@@ -12,13 +12,14 @@
 </p>
 
 <h3 align="center">How to use</h3>
+
 ```bash
 # clone the repository inside your WordPress folder
-git clone https://github.com/JoaoCecconello/wp-hwc.git
+$ git clone https://github.com/JoaoCecconello/wp-hwc.git
 
 # change permissions
-chmod 777 ./wp-hwc/wp-cleaner.sh
+$ chmod 777 ./wp-hwc/wp-cleaner.sh
 
 # execute
-./wp-hwc/wp-cleaner.sh
+$ ./wp-hwc/wp-cleaner.sh
 ```
