@@ -29,7 +29,8 @@ function downloadAndUnzipAll {
 }
 
 function downloadWordpress {
-    local version=`$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")`
+    local version
+    version=$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")
     echo "$version"
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
