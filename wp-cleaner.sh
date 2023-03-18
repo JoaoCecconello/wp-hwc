@@ -50,22 +50,22 @@ function downloadWordpress {
 
 if [ -f "./wp-includes/version.php" ]; then
     downloadWordpress
-    if [ $? ]; then
-        [ -f "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
+    
+    [ -f "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
 
-        printf "Copying files from wp-content, except plugins and themes:\n"
-        rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
+    printf "Copying files from wp-content, except plugins and themes:\n"
+    rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
 
-        printf "Removing malicious files: \n"
-        rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
-        rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+    printf "Removing malicious files: \n"
+    rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+    rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
-        printf "Downloading plugins:\n"
-        downloadAndUnzipAll "plugin"
+    printf "Downloading plugins:\n"
+    downloadAndUnzipAll "plugin"
 
-        printf "Downloading themes:\n"
-        downloadAndUnzipAll "theme"
-    fi
+    printf "Downloading themes:\n"
+    downloadAndUnzipAll "theme"
+    
 else 
     echo "File version.php does not exist, aborting!"
 fi
