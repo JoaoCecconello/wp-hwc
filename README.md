@@ -37,3 +37,9 @@ $ ./wp-hwc/wp-cleaner.sh
 <p>
     All this process allow to recreate the entire wordpress structures and files, avoiding malicious files inside plugins, themes, wordpress core and wp-content folder. The script is not fail-proof, so it generates a report.txt file with all diferences between the hacked and cleaned wordpress.
 </p>
+
+<h2>Dependencies</h2>
+<p>
+    The unzip package should be isntalled. The wp-version.php file must exist.
+</p>
+
