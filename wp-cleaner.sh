@@ -29,15 +29,13 @@ function downloadAndUnzipAll {
 }
 
 function downloadWordpress {
-    local version
-    version=$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")
-    echo "$version"
+    local version=$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
-        printf "Downloading WordPress from: %s\n" "url"
+        printf "Downloading WordPress from: %s\n" "$url"
 
         if wget --quiet -O "wordpress.zip" "$url"; then
-            unzip -qqf "wordpress.zip" && rm -rf "./wordpress.zip"
+            unzip -qq "wordpress.zip" && rm -rf "./wordpress.zip"
             printf "Download completed\n"
             return 0
         else
