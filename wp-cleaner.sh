@@ -10,7 +10,7 @@ function downloadAndUnzipAll {
             local version=$(find "$f" -type f -name "$find_name"  -exec grep -hE 'Version: ' {} \; | tr -d "$REGEX_VERSION")
             if [ -n "$version" ]; then
                 local name="${f##*/}"
-                local zip_path="$NEW_WP_CONTENT_PATH/${type}s/$name.zip"
+                local zip_path="./wordpress/wp-content/${type}s/$name.zip"
                 local url="https://downloads.wordpress.org/$type/$name.$version.zip"
                 
                 printf "Downloading %s from %s... " "$name" "$url"
