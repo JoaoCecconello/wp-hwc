@@ -29,7 +29,7 @@ function downloadAndUnzipAll {
 }
 
 function downloadWordpress {
-    local version=`$(grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d "$REGEX_VERSION")`
+    local version=`$(grep -i '$wp_version =' "./wp-includes/version.php" | tr -d "$REGEX_VERSION")`
     echo "$version"
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
@@ -44,29 +44,28 @@ function downloadWordpress {
             return 1
         fi
     else
-        printf "Failed to find Wordpress version, aborting!"
+        printf "Failed to find Wordpress version, aborting!\n "
         return 1
     fi
 }
 
 if [ -f "./wp-includes/version.php" ]; then
-    downloadWordpress
-    
-    cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
+    if downloadWordpress; then
+         [ -e "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
 
-    printf "Copying files from wp-content, except plugins and themes:\n"
-    rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
+        printf "Copying files from wp-content, except plugins and themes:\n"
+        rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
 
-    printf "Removing malicious files: \n"
-    rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
-    rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+        printf "Removing malicious files: \n"
+        rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+        rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
-    printf "Downloading plugins:\n"
-    downloadAndUnzipAll "plugin"
+        printf "Downloading plugins:\n"
+        downloadAndUnzipAll "plugin"
 
-    printf "Downloading themes:\n"
-    downloadAndUnzipAll "theme"
-    
+        printf "Downloading themes:\n"
+        downloadAndUnzipAll "theme"
+    fi    
 else 
     echo "File version.php does not exist, aborting!"
 fi
