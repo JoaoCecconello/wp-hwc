@@ -62,7 +62,7 @@ if [ -f "./wp-includes/version.php" ]; then
         downloadAndUnzipAll "plugin" "*.php"
         downloadAndUnzipAll "theme" "style.css"
 
-        diff --exclude=wordpress -r ./wordpress .
+        diff --exclude=wordpress -r ./wordpress . | tee report.txt
     fi    
 else 
     echo "File version.php does not exist, aborting!"
