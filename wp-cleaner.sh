@@ -6,9 +6,10 @@ REGEX_VERSION='[:alpha:][:space:][$_=*:;\47]'
 
 function downloadAndUnzipAll {
     local type=$1
+    local find_name=$2
     for f in ./wp-content/"$type"s/*; do
         if [ -d "$f" ]; then
-            local version=$(find "$f" -type f -name '*.php' -exec grep -hE 'Version: ' {} \; | tr -d "$REGEX_VERSION")
+            local version=$(find "$f" -type f -name "$find_name"  -exec grep -hE 'Version: ' {} \; | tr -d "$REGEX_VERSION")
             if [ -n "$version" ]; then
                 local name="${f##*/}"
                 local zip_path="$NEW_WP_CONTENT_PATH/${type}s/$name.zip"
@@ -60,10 +61,10 @@ if [ -f "./wp-includes/version.php" ]; then
         rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
         printf "Downloading plugins:\n"
-        downloadAndUnzipAll "plugin"
+        downloadAndUnzipAll "plugin" "*.php"
 
         printf "Downloading themes:\n"
-        downloadAndUnzipAll "theme"
+        downloadAndUnzipAll "theme" "style.css"
     fi    
 else 
     echo "File version.php does not exist, aborting!"
