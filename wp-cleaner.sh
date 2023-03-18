@@ -29,7 +29,7 @@ function downloadAndUnzipAll {
 }
 
 function downloadWordpress {
-    local version=$(grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d "$REGEX_VERSION")
+    local version=`$(grep -i '$wp_version =' "$WP_VERSION_FILE_PATH" | tr -d "$REGEX_VERSION")`
     if [ -n "$version" ]; then
         local url="https://wordpress.org/wordpress-$version.zip"
         printf "Downloading WordPress from: %s\n" "url"
@@ -51,13 +51,13 @@ function downloadWordpress {
 if [ -f "./wp-includes/version.php" ]; then
     downloadWordpress
     
-    [ -f "./wp-config.php" ] && cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
+    cp -p "./wp-config.php" "./wordpress" && printf "Copied wp-config.php\n"
 
     printf "Copying files from wp-content, except plugins and themes:\n"
     rsync -r --stats --exclude="plugins" --exclude="themes" ./wp-content ./wordpress
 
     printf "Removing malicious files: \n"
-    rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
+    rm -rf `$(find "$NEW_WP_CONTENT_PATH"/uploads -type f -name "*" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
     rm -rf `$(find "$NEW_WP_CONTENT_PATH" -type f -name "*.{php|txt|png|jpeg|jgp|gif|webp|html|css}" -exec grep -iE "$SEARCH_FOR_CODE" {} \;)`
 
     printf "Downloading plugins:\n"
