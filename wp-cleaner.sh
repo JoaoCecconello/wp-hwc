@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 SEARCH_FOR_CODE="(mail|fsockopen|pfsockopen|stream\_socket\_client|exec|system|passthru|eval|base64_decode|goto|eval)"
 REGEX_VERSION='[:alpha:][:space:][$_=*:;\47]'
 
